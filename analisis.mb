@@ -1,0 +1,45 @@
+# Análisis del Sistema - Pedido de Impresión
+
+## 1. Entradas y Salidas
+* **Entradas:**
+  * Cantidad de páginas por paquete (`entrada`): leída por consola para cada elemento de la lista. **Tipo de dato esperado:** Cadena de texto (`str`), convertible a entero (`int`).
+* **Salidas:**
+  * Mensajes de error en caso de formato o rango inválido.
+  * Mensaje de confirmación por paquete aceptado.
+  * Reporte final con:
+    * `paquetes_aceptados`: Entero (`int`).
+    * `total_paginas`: Entero (`int`).
+    * `subtotal`: Numérico (`int` o `float`).
+    * `descuento`: Numérico (`float`).
+    * `total`: Numérico (`float`).
+    * Mensaje `"No se generó un pedido."` si `paquetes_aceptados == 0`.
+
+## 2. Restricciones
+* **Explícitas:**
+  * Exactamente 3 paquetes predefinidos en la lista `paquetes`.
+  * Rango de páginas permitido por paquete: $[1, 50]$ inclusive.
+  * Un único intento por paquete (si falla, se omite con `continue`).
+  * Descuento del $10\%$ aplica solo si el `total_paginas` es **estrictamente mayor a 100**. Con exactamente 100 páginas no aplica descuento.
+  * Uso obligatorio de `for indice in range(len(paquetes))`, `int()`, `try-except ValueError` y la función `calcular_subtotal`.
+* **Implícitas:**
+  * Las páginas no pueden ser números decimales ni negativos.
+  * Si ningún paquete es válido, todos los valores monetarios y de conteo deben mostrarse en $0$.
+
+## 3. Ambigüedades
+* No se identifican ambigüedades en el enunciado. Las reglas de validación, omisión, límites de rango ($1$ a $50$), condición de descuento ($>100$) y el comportamiento ante cero paquetes aceptados están expresamente detallados.
+
+## 4. Precondiciones y Postcondiciones
+* **Del Programa:**
+  * **Precondición:** La lista `paquetes` y la constante `PRECIO_PAGINA` deben estar correctamente definidas al inicio.
+  * **Postcondición:** Se emite un resumen del pedido con las sumatorias e importes calculados correctamente según las reglas estipuladas.
+* **De la función `calcular_subtotal(total_paginas, precio_pagina)`:**
+  * **Precondición:** Recibe dos argumentos numéricos positivos o iguales a cero (`total_paginas >= 0`, `precio_pagina > 0`).
+  * **Postcondición:** Retorna un valor numérico equivalente al producto de las páginas aceptadas por el precio unitario.
+
+## 5. Evidencia de Pruebas Obligatorias
+
+| Prueba | Entradas | Resultado Esperado | Resultado Obtenido | Estado |
+| :--- | :--- | :--- | :--- | :--- |
+| **Prueba 1** | `40`, `35`, `30` | 3 paquetes; 105 páginas; subtotal 210; descuento 21; total 189 | 3 paquetes; 105 páginas; subtotal 210; descuento 21.0; total 189.0 | **CORRECTO** |
+| **Prueba 2** | `50`, `50`, `hola` | 2 paquetes; 100 páginas; subtotal 200; descuento 0; total 200 | 2 paquetes; 100 páginas; subtotal 200; descuento 0.0; total 200.0 | **CORRECTO** |
+| **Prueba 3** | `0`, `51`, `texto` | 0 paquetes; 0 páginas; importes 0; mensaje de no se generó pedido | 0 paquetes; 0 páginas; importes 0; mensaje de no se generó pedido | **CORRECTO** |

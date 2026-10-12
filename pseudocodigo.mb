@@ -1,0 +1,63 @@
+# Pseudocódigo del Programa
+INICIO
+
+    // Definición de constantes y estructuras
+    DEFINIR paquetes COMO LISTA DE CADENAS = ["Apuntes", "Guía de ejercicios", "Material de consulta"]
+    DEFINIR PRECIO_PAGINA COMO ENTERO = 2
+    
+    // Inicialización de acumuladores
+    DEFINIR total_paginas COMO ENTERO = 0
+    DEFINIR paquetes_aceptados COMO ENTERO = 0
+
+    // Función auxiliar
+    FUNCION calcular_subtotal(p_paginas, p_precio)
+        RETORNAR p_paginas * p_precio
+    FIN FUNCION
+
+    // Recorrido de los paquetes
+    PARA indice DESDE 0 HASTA LONGITUD(paquetes) - 1 HACER
+        IMPRIMIR "Ingrese la cantidad de páginas para: " + paquetes[indice]
+        LEER entrada
+
+        INTENTAR
+            paginas = CONVERTIR_A_ENTERO(entrada)
+        SI ERROR EN CONVERSIÓN ENTONCES
+            IMPRIMIR "Entrada no válida. Paquete omitido."
+            CONTINUAR A SIGUIENTE ITERACIÓN
+        FIN INTENTAR
+
+        SI paginas < 1 O paginas > 50 ENTONCES
+            IMPRIMIR "Páginas fuera de rango (1-50). Paquete omitido."
+            CONTINUAR A SIGUIENTE ITERACIÓN
+        FIN SI
+
+        // Procesamiento de paquete válido
+        total_paginas = total_paginas + paginas
+        paquetes_aceptados = paquetes_aceptados + 1
+    FIN PARA
+
+    // Reporte final
+    SI paquetes_aceptados == 0 ENTONCES
+        IMPRIMIR "No se generó un pedido."
+        subtotal = 0
+        descuento = 0
+        total = 0
+    SINO
+        subtotal = LLAMAR calcular_subtotal(total_paginas, PRECIO_PAGINA)
+        
+        SI total_paginas > 100 ENTONCES
+            descuento = subtotal * 0.10
+        SINO
+            descuento = 0
+        FIN SI
+
+        total = subtotal - descuento
+    FIN SI
+
+    IMPRIMIR "Paquetes aceptados: ", paquetes_aceptados
+    IMPRIMIR "Total de páginas: ", total_paginas
+    IMPRIMIR "Subtotal: ", subtotal
+    IMPRIMIR "Descuento: ", descuento
+    IMPRIMIR "Total a pagar: ", total
+
+FIN
